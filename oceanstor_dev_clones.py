@@ -13,6 +13,7 @@
 import sys
 import atexit
 import getpass
+import getopt
 from ConfigParser import SafeConfigParser
 from OceanStor import OceanStor
 
@@ -53,7 +54,18 @@ def main(argv):
     permissions = None
     timeout = 10
 
-    default_dry_run = True
+    try:
+        opts, args = getopt.getopt(argv,
+                                   "hc:",
+                                   ["config="])
+    except getopt.GetoptError:
+        sys.exit(3)
+    for opt, arg in opts:
+        if opt in ("-h", "--help"):
+            us()
+            sys.exit()
+        elif opt in ("-c", "--config"):
+            config_file = arg
 
     # Load Config File
     try:
